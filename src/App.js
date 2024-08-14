@@ -1,7 +1,11 @@
 import axios from 'axios';
 import './App.css';
-import Register from './components/user/Register';
 import { Routes, Route, Link } from 'react-router-dom';
+// components
+import Login from './components/user/Login';
+import Register from './components/user/Register';
+
+
 
 function App() {
   const handleGetUser = async () => {
@@ -17,11 +21,13 @@ function App() {
     <div>
       <button onClick={() => handleGetUser()}>GetUsers</button>
       <Link to="/register">회원가입</Link>
+      <Link to="/login">로그인</Link>
 
 
       <Routes>
         <Route path='/' element={<div>처음 페이지</div>} />
         <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </div>
   );
