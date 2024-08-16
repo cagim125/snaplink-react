@@ -22,7 +22,7 @@ export default function Register() {
       password: password
     }
     try{
-      const response = await axios.post('/users/register', formData)
+      const response = await axios.post('/api/auth/signUp', formData)
       console.log(response);
 
       if(response.status === 200) {
