@@ -8,22 +8,23 @@ export default function Mypage() {
   const navigate = useNavigate();
 
   const handleAuthtication = useCallback(async () => {
-    try{
+    try {
       const response = await axios.get('/users/my-page');
+      const data = response.data;
 
-      // console.log(response);
-      if(response.data === 'login') {
+      console.log(data);
+
+      setUsername(data.name);
+
+    } catch (err) {
+      console.log(err.response.status);
+      if (err.response.status === 409) {
         Swal.fire({
           title: '로그인 해주세요.',
           icon: 'warning'
         })
         navigate('/login')
       }
-
-      setUsername(response.data);
-
-    } catch(err) {
-      console.log(err)
     }
 
   }, [navigate])
@@ -36,7 +37,7 @@ export default function Mypage() {
   return (
     <div>
       <h4>Mypage</h4>
-       <p>안녕하세요. {username}님</p>
+      <p>안녕하세요. {username}님</p>
     </div>
   )
 }

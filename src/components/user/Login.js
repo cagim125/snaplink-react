@@ -1,30 +1,47 @@
-import React from 'react'
+import React, { useState } from 'react'
+import axios from 'axios';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function Login() {
-  // const [username, setUsername] = useState('');
-  // const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
-  // const handleLogin = async () => {
-  //   const formData = {username: username, password: password}
-  //   try {
-  //     const response = await axios.post('/users/login', formData)
-  //     console.log(response.data)
-  //   } catch(err) {
-  //     console.log(err)
-  //   }
-  // }
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = async () => {
+    const formData = new FormData();
+    formData.append('username', username)
+    formData.append('password', password)
+    try {
+      const response = await axios.post('/users/login', formData)
+      console.log(response)
+      if(response.status === 200) {
+        Swal.fire({
+          title: '로그인 되었습니다.',
+          icon: 'success'
+        })
+      }
+      navigate("/")
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   return (
     <div>
       <h4>Login Form</h4>
-      <form action='/users/login' method='post'>
+      <input type='text' placeholder='아이디' onChange={(e) => setUsername(e.target.value)} />
+      <input type='password' placeholder='비밀번호' onChange={(e) => setPassword(e.target.value)} />
+      <button onClick={() => handleLogin()}>로그인</button>
+      {/* <form action='/users/login' method='post'>
         <input type='text' placeholder='아이디' name='username' />
         <input type='password' placeholder='비밀번호' name='password' />
         <button type='submit'>로그인</button>
-      </form>
+      </form> */}
     </div>
-    
-    
+
+
   )
 }
