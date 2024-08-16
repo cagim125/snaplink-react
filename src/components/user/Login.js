@@ -11,19 +11,11 @@ export default function Login() {
   const [password, setPassword] = useState('');
 
   const handleLogin = async () => {
-    const formData = new FormData();
-    formData.append('username', username)
-    formData.append('password', password)
+    const userData = {username: username, password: password}
     try {
-      const response = await axios.post('/users/login', formData)
-      console.log(response)
-      if(response.status === 200) {
-        Swal.fire({
-          title: '로그인 되었습니다.',
-          icon: 'success'
-        })
-      }
-      navigate("/")
+      const response = await axios.post('/users/login', userData)
+      console.log(response.data)
+      
     } catch (err) {
       console.log(err)
     }
