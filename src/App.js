@@ -5,6 +5,7 @@ import { Routes, Route, Link } from 'react-router-dom';
 import Login from './components/user/Login';
 import Register from './components/user/Register';
 import Mypage from './components/user/Mypage';
+import Check from './Check';
 
 
 
@@ -31,6 +32,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/mypage" element={<Mypage />} />
+        <Route path='/check' element={<Check />} />
       </Routes>
     </div>
   );
