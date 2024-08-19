@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import axios from 'axios';
-import Swal from 'sweetalert2';
-import { useNavigate } from 'react-router-dom';
+// import Swal from 'sweetalert2';
+// import { useNavigate } from 'react-router-dom';
 
 
 export default function Login() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -13,7 +13,7 @@ export default function Login() {
   const handleLogin = async () => {
     const userData = {username: username, password: password}
     try {
-      const response = await axios.post('/users/login', userData)
+      const response = await axios.post('/users/login/jwt', userData)
       console.log(response.data)
       
     } catch (err) {
