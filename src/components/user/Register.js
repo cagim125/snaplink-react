@@ -7,10 +7,12 @@ import { useNavigate } from 'react-router-dom';
 export default function Register() {
   const navigate = useNavigate();
 
-
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  const [imgUrl, setImgUrl] = useState('');
+  const [uploadUrl, setUploadUrl] = useState('');
+  const [file, setFile] = useState();
 
   const [isActive, setIsActive] = useState(false);
   const [isValid, setIsValid] = useState(null);
@@ -19,16 +21,21 @@ export default function Register() {
     const formData = {
       username: username,
       email: email,
-      password: password
+      password: password,
+      profileImageUrl : imgUrl
     }
     try{
-      const response = await axios.post('/api/auth/signUp', formData)
+      const response = await axios.post('/api/signUp', formData)
       console.log(response);
 
       if(response.status === 200) {
+        
+        const responseS3 = await axios.put(uploadUrl, file)
+
+        console.log(responseS3);
+
         Swal.fire({
-          title: "회원가입 성공",
-          text: "회원가입이 정상적으로 처리되었습니다.",
+          title: response.data.message,
           icon: "success"
         })
         navigate('/')
@@ -47,11 +54,25 @@ export default function Register() {
         setUsername('');
         
       }
-
-      
     }
   }
 
+  const getUrl = async (e) => {
+    const file = e.target.files[0];
+    const name = encodeURIComponent(file.name);
+
+    const response = await axios.get("/api/presigned-url?filename=" + name)
+    console.log(response);
+
+    if (response.status === 200) {
+      setImgUrl(response.data.split("?")[0])
+      setUploadUrl(response.data)
+      setFile(file)
+    }
+    
+  }
+
+  // 패스워드 검증
   const handleCurrentPW = (e) => {
     if (e.target.value === password) {
       setIsActive(true)
@@ -60,6 +81,7 @@ export default function Register() {
     }
   }
 
+  // 이메일 인증
   const currentEmail = () => {
     setIsValid(validateEmail(email))
   }
@@ -70,18 +92,16 @@ export default function Register() {
     return emailPattern.test(email);
   };
 
-  // const handleAlert = () => {
-  //   Swal.fire({
-  //     title: "회원가입 성공",
-  //     text: "회원가입이 정상적으로 처리되었습니다.",
-  //     icon: "success"
-  //   })
-  // }
+
+
 
 
   return (
     <div className={styles.container}>
       <div className={styles.item}>
+        <div>
+          <input type='file' onChange={(e) => getUrl(e)}></input>
+        </div>
         <div>
           <input type='text' placeholder='아이디' value={username}
           onChange={(e) => setUsername(e.target.value)} />
