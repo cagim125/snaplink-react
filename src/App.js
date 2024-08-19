@@ -6,6 +6,7 @@ import Login from './components/user/Login';
 import Register from './components/user/Register';
 import Mypage from './components/user/Mypage';
 import Check from './Check';
+import Write from './components/post/Write';
 
 
 
@@ -21,11 +22,15 @@ function App() {
 
   return (
     <div>
-      
-      <Link to="/register">회원가입</Link>
-      <Link to="/login">로그인</Link>
-      <Link to="/mypage">마이페이지</Link>
+      <div>
+        <Link to="/register">회원가입</Link>
+        <Link to="/login">로그인</Link>
+        <Link to="/mypage">마이페이지</Link>
+      </div>
 
+      <div>
+        <Link to="/write">글작성</Link>
+      </div>
 
       <Routes>
         <Route path='/' element={<div>처음 페이지</div>} />
@@ -33,6 +38,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/mypage" element={<Mypage />} />
         <Route path='/check' element={<Check />} />
+        <Route path='/write' element={<Write />}/>
       </Routes>
     </div>
   );
