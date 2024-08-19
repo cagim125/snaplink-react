@@ -4,17 +4,23 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
 export default function Mypage() {
-  const [username, setUsername] = useState('');
+  const [data, setData] = useState(null);
+  const [username, _] = useState("cagim25")
   const navigate = useNavigate();
 
   const handleAuthtication = useCallback(async () => {
     try {
-      const response = await axios.get('/users/my-page');
-      const data = response.data;
+      const response = await axios.get(`/api/my-page/${username}`);
+      const result = response.data;
 
-      console.log(data);
+      console.log(result);
 
-      setUsername(data.name);
+      setData(result.data);
+
+      setTimeout(() => {
+        console.log(data);
+      }, 3000);
+
 
     } catch (err) {
       console.log(err.response.status);
@@ -34,10 +40,16 @@ export default function Mypage() {
   }, [handleAuthtication])
 
 
+  if (!data) {
+    return <div>Loading...</div>; // 데이터가 로드되지 않은 경우 로딩 메시지
+  }
+
   return (
     <div>
       <h4>Mypage</h4>
-      <p>안녕하세요. {username}님</p>
+      <img src={data.profileImageUrl} alt="Profile" style={{backgroundColor:'black', borderRadius:'50%'}}/>
+      <p> username : {data.username} </p>
+      <p> email : {data.email}</p>
     </div>
   )
 }
