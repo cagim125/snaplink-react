@@ -63,6 +63,7 @@ export default function Mypage() {
             posts.map((post, index) => (
               <li key={index} className={styles.item}>
                 <h6>Post #{index + 1}</h6>
+                <img src={post.imageUrl} alt='post'></img>
                 <p>{post.content}</p>
               </li>
             ))
