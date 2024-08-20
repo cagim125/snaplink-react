@@ -1,13 +1,41 @@
 import axios from 'axios';
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 export default function Write() {
+  const navigate = useNavigate()
 
   const [content, setContent] = useState('');
   const [imgUrl, setImgUrl] = useState('');
   const [uploadUrl, setUploadUrl] = useState('');
+  const [file, setFile] = useState();
 
   const handleWritePost = async () => {
+    const data = {
+      content: content,
+      imageUrl: imgUrl,
+      userId: 22
+    }
+
+    try {
+      const response = await axios.post("/api/posts/save", data)
+
+      if( response.status === 200) {
+        const responseS3 = await axios.put(uploadUrl, file);
+
+        console.log(responseS3)
+
+        Swal.fire({
+          title: response.data.message,
+          icon: "success"
+        })
+        navigate('/mypage')
+      }
+
+    } catch (err) {
+      console.log(err)
+    }
 
   }
 
@@ -16,7 +44,7 @@ export default function Write() {
     const name = encodeURIComponent(file.name);
     console.log(file);
     
-    const response = await axios.get("/api/presigned-url?filename=" + name)
+    const response = await axios.get("/api/posts/presigned-url?filename=" + name)
 
     console.log(response);
 
@@ -25,8 +53,8 @@ export default function Write() {
     if (response.status === 200) {
       setUploadUrl(url)
       setImgUrl(url.split("?")[0])
+      setFile(file)
     }
-
   }
   return (
     <div>
@@ -37,7 +65,7 @@ export default function Write() {
       <div>
         <input type='text' placeholder='글내용' onChange={(e) => {setContent(e.target.value)}} />
       </div>
-      <button>글작성</button>
+      <button onClick={handleWritePost}>글작성</button>
     </div>
   )
 }
