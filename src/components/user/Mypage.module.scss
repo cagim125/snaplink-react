@@ -1,0 +1,65 @@
+.container {
+  box-sizing: border-box;
+  margin: 0;
+  max-width: 100vw;
+  width: 100%;
+  height: 100vh;
+
+  background-color: bisque;
+
+  .info {
+    max-width: 1280px;
+    width: 100%;
+    height: 100vh;
+    margin: 0 auto;
+
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    
+    background-color: blue;
+
+
+    img {
+      width: 80px;
+      height: 80px;
+    }
+
+
+    .posts {
+      max-width: 1080px;
+      width: 100%;
+      height: 100%;
+
+      padding: 20px;
+
+      .card {
+        border: 2px solid black;
+        padding: 10px;
+
+        display: flex;
+        justify-content: flex-start;
+        gap: 25px;
+
+        .item {
+          max-width: 350px;
+          width: 100%;
+          height: 100%;
+          list-style: none;
+          padding: 10px;
+
+          border: 1px solid salmon;
+
+          img {
+            width: 100%;
+            height: 50%;
+            object-fit: cover;
+            border-radius: 0.5rem;
+          }
+        }
+      }
+    }
+  }
+}
