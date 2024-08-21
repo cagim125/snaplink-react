@@ -55,9 +55,14 @@
           h6 {
             span {
               cursor: pointer;
-
+              padding: 5px;
               &:hover {
                 color: salmon;
+              }
+
+              a {
+                text-decoration: none;
+                color: black;
               }
             }
           }

@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { Link } from 'react-router-dom';
 
 import styles from './Mypage.module.scss';
 
@@ -9,7 +10,7 @@ export default function Mypage() {
   const [data, setData] = useState(null);
   const [posts, setPosts] = useState();
   // eslint-disable-next-line
-  const [userId, _] = useState(22);
+  const [userId, _] = useState(16);
   const navigate = useNavigate();
 
   const handleMyPost = useCallback(async () => {
@@ -62,19 +63,12 @@ export default function Mypage() {
             handleMyPost();
           }
           
-
         } catch (err) {
           console.log(err)
         }
-
-        
       }
     });
-    
 
-
-
-    
   }
 
   useEffect(() => {
@@ -105,6 +99,7 @@ export default function Mypage() {
                 <li key={index} className={styles.item}>
                   <h6>Post #{index + 1}
                     <span onClick={() => handleDeletePost(post.id)}>삭제</span>
+                    <span><Link to={`/update/`+ post.id} >수정</Link></span>
                   </h6>
                   <img src={post.imageUrl} alt='post'></img>
                   <p>{post.content}</p>

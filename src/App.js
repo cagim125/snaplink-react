@@ -7,6 +7,7 @@ import Register from './components/user/Register';
 import Mypage from './components/user/Mypage';
 import Check from './Check';
 import Write from './components/post/Write';
+import Update from './components/post/Update';
 
 
 
@@ -39,6 +40,7 @@ function App() {
         <Route path="/mypage" element={<Mypage />} />
         <Route path='/check' element={<Check />} />
         <Route path='/write' element={<Write />}/>
+        <Route path="/update/:id" element={<Update />} />
       </Routes>
     </div>
   );
