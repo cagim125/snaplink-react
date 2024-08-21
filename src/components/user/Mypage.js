@@ -8,10 +8,11 @@ import styles from './Mypage.module.scss';
 export default function Mypage() {
   const [data, setData] = useState(null);
   const [posts, setPosts] = useState();
+  // eslint-disable-next-line
   const [userId, _] = useState(22);
   const navigate = useNavigate();
 
-  const handleAuthtication = useCallback(async () => {
+  const handleMyPost = useCallback(async () => {
     try {
       const response = await axios.get(`/api/my-page/${userId}`);
       const result = response.data;
@@ -21,24 +22,64 @@ export default function Mypage() {
       setData(result.data);
       setPosts(result.data.posts);
 
-
-
     } catch (err) {
       console.log(err.response.status);
       if (err.response.status === 409) {
-        Swal.fire({
-          title: '로그인 해주세요.',
-          icon: 'warning'
-        })
+        Swal.fire("로그인 해주세요", "", "warning")
         navigate('/login')
       }
     }
 
   }, [navigate, userId])
 
+  const handleDeletePost = (postId) => {
+    Swal.fire({
+      title: "삭제하시겠습니까?",
+      text: "삭제 시 복구 할 수 없습니다.",
+      icon: "warning",
+      showCancelButton: true,
+      cancelButtonText: "취소하기",
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "삭제하기"
+    }).then( async (result) => {
+      if (result.isConfirmed) {
+        try { 
+          const response = await axios.delete('/api/posts',{
+            params: {
+              postId: postId
+            }
+          })
+          console.log(response)
+          if(response.status === 200) {
+            Swal.fire({
+              title: "삭제완료!",
+              text: response.data.message,
+              icon: "success",
+              timer: 3000
+            });
+            // 삭제 시 Data 다시 로드
+            handleMyPost();
+          }
+          
+
+        } catch (err) {
+          console.log(err)
+        }
+
+        
+      }
+    });
+    
+
+
+
+    
+  }
+
   useEffect(() => {
-    handleAuthtication();
-  }, [handleAuthtication])
+    handleMyPost();
+  }, [handleMyPost])
 
 
   if (!data) {
@@ -56,20 +97,22 @@ export default function Mypage() {
         <img src={data.profileImageUrl} alt="Profile" style={{ backgroundColor: 'black', borderRadius: '50%' }} />
         <h3> username : {data.username}님 </h3>
 
-        <div style={{backgroundColor:'white'}} className={styles.posts}>
+        <div style={{ backgroundColor: 'white' }} className={styles.posts}>
           <h5>Posts</h5>
           <ul className={styles.card}>
-          {posts && posts.length > 0 ? (
-            posts.map((post, index) => (
-              <li key={index} className={styles.item}>
-                <h6>Post #{index + 1}</h6>
-                <img src={post.imageUrl} alt='post'></img>
-                <p>{post.content}</p>
-              </li>
-            ))
-          ) : (
-            <p>No posts available.</p>
-          )}
+            {posts && posts.length > 0 ? (
+              posts.map((post, index) => (
+                <li key={index} className={styles.item}>
+                  <h6>Post #{index + 1}
+                    <span onClick={() => handleDeletePost(post.id)}>삭제</span>
+                  </h6>
+                  <img src={post.imageUrl} alt='post'></img>
+                  <p>{post.content}</p>
+                </li>
+              ))
+            ) : (
+              <p>No posts available.</p>
+            )}
           </ul>
         </div>
       </div>
