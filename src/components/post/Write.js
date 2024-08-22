@@ -15,7 +15,7 @@ export default function Write() {
     const data = {
       content: content,
       imageUrl: imgUrl,
-      userId: 16
+      userId: 22
     }
 
     try {
