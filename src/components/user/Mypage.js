@@ -43,16 +43,16 @@ export default function Mypage() {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "삭제하기"
-    }).then( async (result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        try { 
-          const response = await axios.delete('/api/posts',{
+        try {
+          const response = await axios.delete('/api/posts', {
             params: {
               postId: postId
             }
           })
           console.log(response)
-          if(response.status === 200) {
+          if (response.status === 200) {
             Swal.fire({
               title: "삭제완료!",
               text: response.data.message,
@@ -62,7 +62,7 @@ export default function Mypage() {
             // 삭제 시 Data 다시 로드
             handleMyPost();
           }
-          
+
         } catch (err) {
           console.log(err)
         }
@@ -87,18 +87,20 @@ export default function Mypage() {
       <div className={styles.info}>
         <h1>Mypage</h1>
 
-        <img src={data.profileImageUrl} alt="Profile" style={{ backgroundColor: 'black', borderRadius: '50%' }} />
-        <h3> username : {data.username}님 </h3>
+        <div className={styles.profile}>
+          <img src={data.profileImgUrl} alt="Profile" style={{ backgroundColor: 'black', borderRadius: '50%' }} />
+          <span>{data.username}님</span>
+        </div>
 
         <div style={{ backgroundColor: 'white' }} className={styles.posts}>
-          <h5>Posts</h5>
+          <h5 style={{ textAlign: 'center' }}>Posts</h5>
           <ul className={styles.card}>
             {posts && posts.length > 0 ? (
               posts.map((post, index) => (
                 <li key={index} className={styles.item}>
                   <h6>Post #{index + 1}
                     <span onClick={() => handleDeletePost(post.id)}>삭제</span>
-                    <span><Link to={`/update/`+ post.id} >수정</Link></span>
+                    <span><Link to={`/update/` + post.id} >수정</Link></span>
                   </h6>
                   <img src={post.imageUrl} alt='post'></img>
                   <p>{post.content}</p>

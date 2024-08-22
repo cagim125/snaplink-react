@@ -21,10 +21,24 @@
     
     background-color: blue;
 
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 12px 0;
+
+      span {
+        font-size: 18px;
+        font-weight: 700;
+        color: salmon;
+      }
+    }
+
 
     img {
-      width: 80px;
-      height: 80px;
+      width: 64px;
+      height: 64px;
+      object-fit: cover;
     }
 
 
