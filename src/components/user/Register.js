@@ -12,7 +12,8 @@ export default function Register() {
   const [email, setEmail] = useState('');
   const [imgUrl, setImgUrl] = useState('');
   const [uploadUrl, setUploadUrl] = useState('');
-  const [file, setFile] = useState();
+  const [file, setFile] = useState('');
+  const [fileName, setFileName] = useState('');
 
   const [isActive, setIsActive] = useState(false);
   const [isValid, setIsValid] = useState(null);
@@ -22,14 +23,14 @@ export default function Register() {
       username: username,
       email: email,
       password: password,
-      profileImageUrl : imgUrl
+      profileImageUrl: imgUrl
     }
-    try{
+    try {
       const response = await axios.post('/api/signUp', formData)
       console.log(response);
 
-      if(response.status === 200) {
-        
+      if (response.status === 200) {
+
         const responseS3 = await axios.put(uploadUrl, file)
 
         console.log(responseS3);
@@ -39,12 +40,12 @@ export default function Register() {
           icon: "success"
         })
         navigate('/')
-      } 
+      }
 
     } catch (err) {
       console.log(err.response);
       const res = err.response;
-      if(res.status === 409) {
+      if (res.status === 409) {
         Swal.fire({
           title: "이미 존재하는 아이디입니다.",
           text: "이미 존재하는 아이디 입니다.",
@@ -52,7 +53,7 @@ export default function Register() {
         })
 
         setUsername('');
-        
+
       }
     }
   }
@@ -68,8 +69,9 @@ export default function Register() {
       setImgUrl(response.data.split("?")[0])
       setUploadUrl(response.data)
       setFile(file)
+      setFileName(name)
     }
-    
+
   }
 
   // 패스워드 검증
@@ -99,29 +101,34 @@ export default function Register() {
   return (
     <div className={styles.container}>
       <div className={styles.item}>
-        <div>
-          <input type='file' onChange={(e) => getUrl(e)}></input>
-        </div>
-        <div>
-          <input type='text' placeholder='아이디' value={username}
+        <h1>회원가입</h1>
+        <label htmlFor="file">
+          <div className={styles.btn_upload}>
+            파일 업로드하기
+          </div>
+          <p>{fileName}</p>
+        </label>
+        <input type='file' id='file' onChange={(e) => getUrl(e)}></input>
+
+
+        <input type='text' placeholder='아이디' value={username}
           onChange={(e) => setUsername(e.target.value)} />
-        </div>
-        <div>
-          <input className={isActive ? styles.active : styles.inactive} 
-            type='password' placeholder='비밀번호' value={password}
-            onChange={(e) => setPassword(e.target.value)} />
-        </div>
-        <div>
-          <input className={isActive ? styles.active : styles.inactive} 
-            type='password' placeholder='비밀번호 확인' 
-            onChange={(e) => handleCurrentPW(e)} />
-        </div>
-        <div>
-          <input type='email' placeholder='이메일' onChange={(e) => setEmail(e.target.value)} />
-          {isValid === true && <p style={{ color: 'green' }}>Valid email!</p>}
-          {isValid === false && <p style={{ color: 'red' }}>Invalid email format.</p>}
-        </div>
-        <button onClick={() => currentEmail()} style={{cursor:'pointer', border:'none', backgroundColor:'green', color:'white', padding:'10px'}}>이메일 인증</button>
+
+
+        <input className={isActive ? styles.active : styles.inactive}
+          type='password' placeholder='비밀번호' value={password}
+          onChange={(e) => setPassword(e.target.value)} />
+
+        <input className={isActive ? styles.active : styles.inactive}
+          type='password' placeholder='비밀번호 확인'
+          onChange={(e) => handleCurrentPW(e)} />
+
+
+        <input type='email' placeholder='이메일' onChange={(e) => setEmail(e.target.value)} />
+        {isValid === true && <p style={{ color: 'green' }}>Valid email!</p>}
+        {isValid === false && <p style={{ color: 'red' }}>Invalid email format.</p>}
+
+        <button onClick={() => currentEmail()} style={{ cursor: 'pointer', border: 'none', backgroundColor: 'green', color: 'white', padding: '10px' }}>이메일 인증</button>
         {/* <button onClick={() => handleAlert()}>sweetalert2 테스트</button> */}
         <input type='button' value='회원가입' onClick={() => handleRegister()} />
       </div>

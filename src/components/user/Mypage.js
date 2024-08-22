@@ -88,22 +88,25 @@ export default function Mypage() {
         <h1>Mypage</h1>
 
         <div className={styles.profile}>
-          <img src={data.profileImgUrl} alt="Profile" style={{ backgroundColor: 'black', borderRadius: '50%' }} />
+          <img src={data.profileImgUrl} alt="Profile" />
           <span>{data.username}님</span>
         </div>
 
-        <div style={{ backgroundColor: 'white' }} className={styles.posts}>
-          <h5 style={{ textAlign: 'center' }}>Posts</h5>
+        <div className={styles.posts}>
+          <h1>Posts</h1>
           <ul className={styles.card}>
             {posts && posts.length > 0 ? (
               posts.map((post, index) => (
                 <li key={index} className={styles.item}>
-                  <h6>Post #{index + 1}
-                    <span onClick={() => handleDeletePost(post.id)}>삭제</span>
-                    <span><Link to={`/update/` + post.id} >수정</Link></span>
-                  </h6>
+                  <div className={styles.title}>
+                    <h5>Post #{index + 1}</h5>
+                    <div>
+                      <span><Link to={`/update/` + post.id} >수정</Link></span>
+                      <span onClick={() => handleDeletePost(post.id)}>삭제</span>
+                    </div>
+                  </div>
                   <img src={post.imageUrl} alt='post'></img>
-                  <p>{post.content}</p>
+                  <h4>{post.content}</h4>
                 </li>
               ))
             ) : (
@@ -112,8 +115,6 @@ export default function Mypage() {
           </ul>
         </div>
       </div>
-
-
     </div>
   )
 }

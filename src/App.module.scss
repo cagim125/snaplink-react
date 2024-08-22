@@ -1,0 +1,32 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+.container {
+  width: 100vw;
+  height: 100vh;
+  background-color: grey;
+
+  .navigation {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    padding: 12px;
+
+    ul {
+      display: flex;
+      list-style: none;
+      gap: 12px;
+
+      li {
+
+        a {
+          text-decoration: none;
+          color: rgb(233, 227, 227);
+          font-weight: 600;
+        }
+      }
+    }
+  }
+}

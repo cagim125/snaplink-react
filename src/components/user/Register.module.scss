@@ -1,8 +1,7 @@
 .container {
-  max-width: 1280px;
-  width: 100%;
+  width: 100vw;
   height: 100vh;
-  margin: 0 auto;
+  margin: 64px auto;
 
   // background-color: rgb(165, 134, 134);
 
@@ -19,18 +18,58 @@
     align-items: center;
     flex-direction: column;
 
-    gap: 8px;
+    gap: 12px;
 
-    input {
+    label {
+      text-align: center;
+
+      p {
+        padding: 10px;
+        color: #fff;
+        font-weight: 800;
+      }
+      
+    }
+
+    .btn_upload {
+      width: 160px;
+      height: 40px;
+      background: #fff;
+      border: 1px solid rgb(77, 77, 77);
+      border-radius: 10px;
+      font-weight: 500;
+      padding: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  
+      &:hover {
+        background: rgb(77, 77, 77);
+        color: #fff;
+      }
+    }
+
+
+    input[type=file] {
+      display: none;
+    }
+
+    input[type=text],
+    input[type=password],
+    input[type=email],
+    input[type=button] {
       margin-top: 10px;
       width: 550px;
       padding: 20px;
-      border: 1px solid black;
-      border-radius: 4px; 
+      border: 1px solid rgb(99, 99, 99);
+      // outline: none;
+      border-radius: 4px;
       cursor: pointer;
       font-size: 16px;
     }
-    input[type="button"] {
+
+    input[type=button] {
       background-color: black;
       color: white;
     }
@@ -41,16 +80,17 @@
       padding: 20px;
       cursor: pointer;
     }
-    
+
     .inactive {
       background-color: lightcoral;
       color: darkred;
       padding: 20px;
       cursor: pointer;
     }
-    
-
   }
+
+ 
+
 
 
 
