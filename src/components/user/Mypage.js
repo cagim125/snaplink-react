@@ -10,7 +10,7 @@ export default function Mypage() {
   const [data, setData] = useState(null);
   const [posts, setPosts] = useState();
   // eslint-disable-next-line
-  const [userId, _] = useState(16);
+  const [userId, _] = useState(22);
   const navigate = useNavigate();
 
   const handleMyPost = useCallback(async () => {
@@ -68,7 +68,6 @@ export default function Mypage() {
         }
       }
     });
-
   }
 
   useEffect(() => {
