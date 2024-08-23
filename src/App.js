@@ -1,4 +1,4 @@
-
+import styles from './App.module.scss';
 import { Routes, Route, Link } from 'react-router-dom';
 // components
 import Login from './components/user/Login';
@@ -7,25 +7,38 @@ import Mypage from './components/user/Mypage';
 import Check from './Check';
 import Write from './components/post/Write';
 import Update from './components/post/Update';
+import Main from './components/Main';
 
-import styles from './App.module.scss'
-
+import axios from 'axios';
+import { useCallback, useEffect, useState } from 'react';
 
 
 function App() {
-  // const handleGetUser = async () => {
-  //   try {
-  //     const response = await axios.get('/users');
-  //     console.log(response);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }
+  const [posts, setPosts] = useState();
+
+  const handleGetAllPost = useCallback(async () => {
+    try {
+      const response = await axios.get('/api/posts');
+      console.log(response.data);
+
+      if(response.status === 200) {
+        setPosts(response.data.data);
+      }
+
+    } catch (err) {
+      console.log(err);
+    }
+  },[]) 
+
+  useEffect(()=> {
+    handleGetAllPost()
+  },[handleGetAllPost])
 
   return (
     <div className={styles.container}>
       <div className={styles.navigation}>
         <ul>
+          <li><Link to='/'><img src={`${process.env.PUBLIC_URL}/favicon-32x32.png`} alt='logo'/></Link></li>
           <li><Link to="/write">글작성</Link></li>
         </ul>
         <ul>
@@ -38,7 +51,7 @@ function App() {
 
 
       <Routes>
-        <Route path='/' element={<div>처음 페이지</div>} />
+        <Route path='/' element={<Main posts={posts} />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/mypage" element={<Mypage />} />

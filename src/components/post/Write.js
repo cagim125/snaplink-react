@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import styles from './Write.module.scss';
 
 export default function Write() {
   const navigate = useNavigate()
@@ -10,6 +11,7 @@ export default function Write() {
   const [imgUrl, setImgUrl] = useState('');
   const [uploadUrl, setUploadUrl] = useState('');
   const [file, setFile] = useState();
+  const [fileName, setFileName] = useState('');
 
   const handleWritePost = async () => {
     const data = {
@@ -21,7 +23,7 @@ export default function Write() {
     try {
       const response = await axios.post("/api/posts/save", data)
 
-      if( response.status === 200) {
+      if (response.status === 200) {
         const responseS3 = await axios.put(uploadUrl, file);
 
         console.log(responseS3)
@@ -43,7 +45,7 @@ export default function Write() {
     const file = e.target.files[0]
     const name = encodeURIComponent(file.name);
     console.log(file);
-    
+
     const response = await axios.get("/api/posts/presigned-url?filename=" + name)
 
     console.log(response);
@@ -54,18 +56,24 @@ export default function Write() {
       setUploadUrl(url)
       setImgUrl(url.split("?")[0])
       setFile(file)
+      setFileName(name)
     }
   }
   return (
-    <div>
-      <h4>Write</h4>
-      <div>
-        <input type='file' onChange={(e) => handleImgUrl(e)}/>
+    <div className={styles.container}>
+      <div className={styles.item}>
+        <h1>Write</h1>
+        <label htmlFor='file'>
+          <div className={styles.btn_upload}>파일 업로드하기</div>
+        </label>
+        <p>{fileName}</p>
+        <input type='file' id='file' onChange={(e) => handleImgUrl(e)} />
+        
+        <div>
+          <input type='text' placeholder='글내용' onChange={(e) => { setContent(e.target.value) }} />
+        </div>
+        <button onClick={handleWritePost}>글작성</button>
       </div>
-      <div>
-        <input type='text' placeholder='글내용' onChange={(e) => {setContent(e.target.value)}} />
-      </div>
-      <button onClick={handleWritePost}>글작성</button>
     </div>
   )
 }
