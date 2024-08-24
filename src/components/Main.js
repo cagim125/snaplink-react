@@ -1,9 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styles from './Main.module.scss'
+import Comment from './comment/Comment';
 
 export default function Main({ posts }) {
+  const [modal, setModal] = useState(false);
+  const [currentPost, setCurrentPost] = useState();
+  const [CurrentUserId, setCurrentUserId] = useState();
+  const [comments, setComments] = useState();
 
-  console.log(posts);
+  const handleComment = (postId, userId, comments) => {
+    setCurrentPost(postId)
+    setCurrentUserId(userId)
+    setComments(comments)
+    setModal(!modal)
+  }
+
   return (
 
     <div className={styles.container}>
@@ -32,24 +43,34 @@ export default function Main({ posts }) {
                     <div className={styles.postImage}>
                       <img src={post.imageUrl} alt='postImg' />
                     </div>
+                    <div className={styles.postComment}>
+                      <img onClick={() => 
+                        handleComment(post.id, post.user.id, post.comments)} 
+                        src={`${process.env.PUBLIC_URL}/images/chat.png`} 
+                        alt='comment' />
+                    </div>
                     <div className={styles.postContent}>
-                        {post.content}
+                      {post.content}
                     </div>
                   </div>
-
-
                 </>
               ))}
-
             </div>
-
-          ) :
-          (
+          ) : (
             <div>
               <p>No 게시물</p>
             </div>
           )
         }
+        {
+          modal && 
+          <Comment 
+            setModal={setModal} 
+            postId={currentPost} 
+            userId={CurrentUserId}
+            commentList={comments} />
+        }
+
       </div>
     </div>
   )
