@@ -44,6 +44,7 @@ export default function Main({ posts }) {
                       <img src={post.imageUrl} alt='postImg' />
                     </div>
                     <div className={styles.postComment}>
+                      <img src={`${process.env.PUBLIC_URL}/images/heart.png`}  alt='like' />
                       <img onClick={() => 
                         handleComment(post.id, post.user.id, post.comments)} 
                         src={`${process.env.PUBLIC_URL}/images/chat.png`} 
