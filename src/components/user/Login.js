@@ -6,11 +6,10 @@ import styles from './Login.module.scss'
 
 
 export default function Login() {
-  // const navigate = useNavigate();
+
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  // const [token, setToken] = useState('');
 
   const handleLogin = async () => {
     const userData = {username: username, password: password}
