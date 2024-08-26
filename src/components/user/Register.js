@@ -26,7 +26,7 @@ export default function Register() {
       profileImageUrl: imgUrl
     }
     try {
-      const response = await axios.post('/api/signUp', formData)
+      const response = await axios.post('/api/auth/signUp', formData)
       console.log(response);
 
       if (response.status === 200) {
