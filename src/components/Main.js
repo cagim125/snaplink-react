@@ -1,18 +1,35 @@
 import React, { useState } from 'react'
 import styles from './Main.module.scss'
 import Comment from './comment/Comment';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+
 
 export default function Main({ posts }) {
   const [modal, setModal] = useState(false);
   const [currentPost, setCurrentPost] = useState();
-  const [CurrentUserId, setCurrentUserId] = useState();
+  const currentUserId = useSelector((state) => state.auth.userId);
   const [comments, setComments] = useState();
+  // eslint-disable-next-line
+  const [userId, _] = useState(20);
 
-  const handleComment = (postId, userId, comments) => {
+
+  
+  const handleComment = (postId, comments) => {
     setCurrentPost(postId)
-    setCurrentUserId(userId)
     setComments(comments)
     setModal(!modal)
+  }
+
+  const handleLike = async (postId) => {
+    try {
+      const response = await axios.post(`/api/${postId}/likes?userId=${userId}`)
+
+      console.log(response.data)
+
+    } catch (err) {
+      console.log(err)
+    }   
   }
 
   return (
@@ -24,7 +41,7 @@ export default function Main({ posts }) {
           (
             <div className={styles.card}>
               {posts.map((post, index) => (
-                <>
+                
                   <div key={index} className={styles.profile}>
                     <div className={styles.name}>
                       <div>
@@ -44,9 +61,14 @@ export default function Main({ posts }) {
                       <img src={post.imageUrl} alt='postImg' />
                     </div>
                     <div className={styles.postComment}>
-                      <img src={`${process.env.PUBLIC_URL}/images/heart.png`}  alt='like' />
+                      <img
+                        onClick={() => handleLike(post.id, post.user.id)} 
+                        src={ post.likedByUser === true ? 
+                          `${process.env.PUBLIC_URL}/images/like.png` :
+                           `${process.env.PUBLIC_URL}/images/unlike.png`}  
+                        alt='unlike' />
                       <img onClick={() => 
-                        handleComment(post.id, post.user.id, post.comments)} 
+                        handleComment(post.id, post.comments)} 
                         src={`${process.env.PUBLIC_URL}/images/chat.png`} 
                         alt='comment' />
                     </div>
@@ -54,7 +76,7 @@ export default function Main({ posts }) {
                       {post.content}
                     </div>
                   </div>
-                </>
+                
               ))}
             </div>
           ) : (
@@ -68,7 +90,7 @@ export default function Main({ posts }) {
           <Comment 
             setModal={setModal} 
             postId={currentPost} 
-            userId={CurrentUserId}
+            userId={currentUserId}
             commentList={comments} />
         }
 
