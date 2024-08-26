@@ -10,12 +10,23 @@ export default function Login() {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  // const [token, setToken] = useState('');
 
   const handleLogin = async () => {
     const userData = {username: username, password: password}
     try {
-      const response = await axios.post('/users/login/jwt', userData)
-      console.log(response.data)
+      const response = await axios.post('/api/auth/login', userData)
+
+      console.log(response)
+      
+      if (response.status === 200) {
+        const data = response.data.data
+        localStorage.setItem('token', data.token) // 토큰을 로컬 스토리지에 저장
+        // setToken(data.token)
+        console.log('Token', data.token);
+      } else {
+        console.error('Login failed');
+      }
       
     } catch (err) {
       console.log(err)
