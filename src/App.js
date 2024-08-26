@@ -1,5 +1,6 @@
 import styles from './App.module.scss';
 import { Routes, Route, Link } from 'react-router-dom';
+
 // components
 import Login from './components/user/Login';
 import Register from './components/user/Register';
@@ -13,12 +14,20 @@ import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 
 
+
 function App() {
   const [posts, setPosts] = useState();
 
   const handleGetAllPost = useCallback(async () => {
     try {
-      const response = await axios.get('/api/posts');
+      const response = await axios.get('/api/posts',{
+        params: {
+          currentUserId: 22
+        },
+        headers: {
+          "Content-Type" : "application/json"
+        }
+      });
       console.log(response.data);
 
       if(response.status === 200) {
